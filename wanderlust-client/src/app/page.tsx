@@ -1,5 +1,6 @@
 import Banner from "@/components/Banner";
 import Navbar from "@/components/Navbar";
+import Testimonials from "@/components/Testimonials";
 import WhyChooseUs from "@/components/WhyChooseUs";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
       <Navbar />
       <Banner />
       <WhyChooseUs />
+      <Testimonials />
     </>
   );
 }
