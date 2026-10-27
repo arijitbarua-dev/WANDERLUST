@@ -1,12 +1,34 @@
-
 import Image from "next/image";
 import Link from "next/link";
+import EditDestinationDialog from "@/components/EditDestinationDialog";
 
-const DestinationDetailPage = async ({ params }) => {
+type DestinationDetailPageProps = {
+    params: Promise<{
+        id: string;
+    }>;
+};
+
+type Destination = {
+    _id: string;
+    destinationName: string;
+    country: string;
+    category: string;
+    price: string;
+    duration: string;
+    departureDate: string;
+    imageUrl: string;
+    description: string;
+    highlights?: string[];
+    rating?: number;
+    reviews?: number;
+    overview?: string;
+};
+
+const DestinationDetailPage = async ({ params }: DestinationDetailPageProps) => {
     const { id } = await params;
 
     const res = await fetch(`http://localhost:5000/destinations/${id}`);
-    const destination = await res.json();
+    const destination: Destination = await res.json();
 
     return (
         <main className="mx-auto max-w-7xl px-6 py-10 lg:px-10">
@@ -20,12 +42,7 @@ const DestinationDetailPage = async ({ params }) => {
                 </Link>
 
                 <div className="flex gap-3">
-                    <Link
-                        href={`/destinations/${id}/edit`}
-                        className="rounded border px-4 py-2 text-sm hover:bg-gray-50"
-                    >
-                        ✎ Edit
-                    </Link>
+                    <EditDestinationDialog destination={destination} />
 
                     <button className="rounded border border-red-200 px-4 py-2 text-sm text-red-500 hover:bg-red-50">
                         Cancel
@@ -34,10 +51,10 @@ const DestinationDetailPage = async ({ params }) => {
             </div>
 
             {/* Hero image */}
-            <div className="relative mb-10 h-[280px] w-full overflow-hidden rounded-xl sm:h-[400px] lg:h-[480px]">
+            <div className="relative mb-10 h-70 w-full overflow-hidden rounded-xl sm:h-100 lg:h-120">
                 <Image
                     src={destination.imageUrl}
-                    alt={destination.name || "Destination"}
+                    alt={destination.destinationName || "Destination"}
                     fill
                     priority
                     sizes="(max-width: 768px) 100vw, 1200px"
@@ -50,11 +67,11 @@ const DestinationDetailPage = async ({ params }) => {
                 {/* Left content */}
                 <section className="lg:col-span-2 space-y-8">
                     <p className="mb-2 text-sm text-gray-500">
-                        ♧ {destination.country || destination.location || "Destination"}
+                        ♧ {destination.country || "Destination"}
                     </p>
 
                     <h1 className="mb-4 text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-                        {destination.name || destination.title}
+                        {destination.destinationName}
                     </h1>
 
                     {/* Rating and trip duration */}
@@ -80,7 +97,7 @@ const DestinationDetailPage = async ({ params }) => {
                         <p className="text-base leading-7 text-gray-600">
                             {destination.overview ||
                                 destination.description ||
-                                `Discover the magic of ${destination.name || destination.title}, with pristine beaches, ancient temples, and vibrant culture. Experience luxury resorts, tropical landscapes, and unforgettable sunsets.`}
+                                `Discover the magic of ${destination.destinationName}, with pristine beaches, ancient temples, and vibrant culture. Experience luxury resorts, tropical landscapes, and unforgettable sunsets.`}
                         </p>
                     </div>
 
@@ -90,7 +107,7 @@ const DestinationDetailPage = async ({ params }) => {
 
                         <p className="mb-4 text-sm leading-6 text-gray-500">
                             {destination.description ||
-                                `Discover the magic of ${destination.name || destination.title}, with pristine beaches, ancient temples, and vibrant culture. Experience luxury resorts, tropical landscapes, and unforgettable sunsets.`}
+                                `Discover the magic of ${destination.destinationName}, with pristine beaches, ancient temples, and vibrant culture. Experience luxury resorts, tropical landscapes, and unforgettable sunsets.`}
                         </p>
 
                         <div className="grid grid-cols-1 gap-3 text-sm text-gray-600 sm:grid-cols-2">
