@@ -3,10 +3,11 @@ import Link from "next/link";
 import { UserRound } from "lucide-react";
 
 const navLinks: { label: string; href: string; active?: boolean }[] = [
-  { label: "Home", href: "/", active: true },
+  { label: "Home", href: "/" },
   { label: "Destinations", href: "/destinations" },
+  { label: "Add Destination", href: "/add-destination" },
   { label: "My Bookings", href: "/my-bookings" },
-  { label: "Admin", href: "/admin" },
+  // { label: "Admin", href: "/admin" },
 ];
 
 export default function Navbar() {

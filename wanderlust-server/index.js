@@ -39,6 +39,11 @@ app.post('/add-destination', async (req, res) => {
   res.send(result);
 })
 
+app.get('/destinations', async (req, res) => {
+  const result = await destinationCollection.find().toArray();
+  res.send(result);
+})
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
