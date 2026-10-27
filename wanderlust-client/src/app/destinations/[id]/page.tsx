@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import EditDestinationDialog from "@/components/EditDestinationDialog";
+import DeleteDestinationDialog from "@/components/DeleteDestinationDialog";
 
 type DestinationDetailPageProps = {
     params: Promise<{
@@ -44,9 +45,10 @@ const DestinationDetailPage = async ({ params }: DestinationDetailPageProps) => 
                 <div className="flex gap-3">
                     <EditDestinationDialog destination={destination} />
 
-                    <button className="rounded border border-red-200 px-4 py-2 text-sm text-red-500 hover:bg-red-50">
-                        Cancel
-                    </button>
+                    <DeleteDestinationDialog
+                        destinationId={destination._id}
+                        destinationName={destination.destinationName}
+                    />
                 </div>
             </div>
 
