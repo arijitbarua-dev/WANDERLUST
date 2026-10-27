@@ -1,0 +1,168 @@
+
+import Image from "next/image";
+import Link from "next/link";
+
+const DestinationDetailPage = async ({ params }) => {
+    const { id } = await params;
+
+    const res = await fetch(`http://localhost:5000/destinations/${id}`);
+    const destination = await res.json();
+
+    return (
+        <main className="mx-auto max-w-7xl px-6 py-10 lg:px-10">
+            {/* Back button and actions */}
+            <div className="mb-4 flex items-center justify-between">
+                <Link
+                    href="/destinations"
+                    className="text-sm text-gray-500 hover:text-cyan-600"
+                >
+                    ← Back to Destinations
+                </Link>
+
+                <div className="flex gap-3">
+                    <Link
+                        href={`/destinations/${id}/edit`}
+                        className="rounded border px-4 py-2 text-sm hover:bg-gray-50"
+                    >
+                        ✎ Edit
+                    </Link>
+
+                    <button className="rounded border border-red-200 px-4 py-2 text-sm text-red-500 hover:bg-red-50">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+
+            {/* Hero image */}
+            <div className="relative mb-10 h-[280px] w-full overflow-hidden rounded-xl sm:h-[400px] lg:h-[480px]">
+                <Image
+                    src={destination.imageUrl}
+                    alt={destination.name || "Destination"}
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 1200px"
+                    className="object-cover"
+                />
+            </div>
+
+            {/* Destination details and booking card */}
+            <div className="grid grid-cols-1 gap-10 border-t border-gray-100 pt-8 lg:grid-cols-3 lg:gap-12">
+                {/* Left content */}
+                <section className="lg:col-span-2 space-y-8">
+                    <p className="mb-2 text-sm text-gray-500">
+                        ♧ {destination.country || destination.location || "Destination"}
+                    </p>
+
+                    <h1 className="mb-4 text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+                        {destination.name || destination.title}
+                    </h1>
+
+                    {/* Rating and trip duration */}
+                    <div className="mb-8 flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                        <span>
+                            <span className="text-green-600">★</span>{" "}
+                            <strong className="text-gray-900">
+                                {destination.rating || "4.9"}
+                            </strong>
+                            <span className="text-gray-400">
+                                {" "}({destination.reviews || 234} reviews)
+                            </span>
+                        </span>
+
+                        <span>
+                            ▣ {destination.duration || "7 Days / 6 Nights"}
+                        </span>
+                    </div>
+
+                    {/* Overview */}
+                    <div className="mb-7">
+                        <h2 className="mb-4 text-2xl font-semibold text-grey-900">Overview</h2>
+                        <p className="text-base leading-7 text-gray-600">
+                            {destination.overview ||
+                                destination.description ||
+                                `Discover the magic of ${destination.name || destination.title}, with pristine beaches, ancient temples, and vibrant culture. Experience luxury resorts, tropical landscapes, and unforgettable sunsets.`}
+                        </p>
+                    </div>
+
+                    {/* Highlights */}
+                    <div>
+                        <h2 className="mb-3 text-xl font-medium">Highlights</h2>
+
+                        <p className="mb-4 text-sm leading-6 text-gray-500">
+                            {destination.description ||
+                                `Discover the magic of ${destination.name || destination.title}, with pristine beaches, ancient temples, and vibrant culture. Experience luxury resorts, tropical landscapes, and unforgettable sunsets.`}
+                        </p>
+
+                        <div className="grid grid-cols-1 gap-3 text-sm text-gray-600 sm:grid-cols-2">
+                            {(
+                                destination.highlights?.length
+                                    ? destination.highlights
+                                    : [
+                                        "Luxury beachfront accommodation",
+                                        "Visit ancient temples at sunset",
+                                        "Traditional Balinese spa treatment",
+                                        "Private beach dinner experience",
+                                        "Sunrise trek to Mount Batur",
+                                    ]
+                            ).map((highlight, index) => (
+                                <div key={index} className="flex items-start gap-2">
+                                    <span className="text-green-500">✓</span>
+                                    <span>{highlight}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Right booking card */}
+                <aside className="h-fit rounded-xl border border-gray-200 bg-white p-7 shadow-md lg:sticky lg:top-8">
+                    <p className="text-xs text-gray-500">Starting from</p>
+
+                    <div className="mb-2 text-4xl font-semibold text-cyan-600">
+                        ${destination.price || 1299}
+                    </div>
+
+                    <p className="mb-5 text-xs text-gray-500">per person</p>
+
+                    <label
+                        htmlFor="travel-date"
+                        className="mb-2 block text-sm text-gray-700"
+                    >
+                        Travel date
+                    </label>
+
+                    <input
+                        id="travel-date"
+                        type="date"
+                        defaultValue="2026-05-15"
+                        className="mb-4 w-full border border-gray-200 bg-gray-50 px-3 py-3 text-sm outline-none focus:border-cyan-500"
+                    />
+
+                    <Link
+                        href={`/bookings/new?destinationId=${id}`}
+                        className="mb-4 flex w-full items-center justify-center gap-2 bg-cyan-500 px-4 py-3 text-sm font-medium text-white transition hover:bg-cyan-600"
+                    >
+                        Book Now <span>→</span>
+                    </Link>
+
+                    <ul className="space-y-2 text-xs text-gray-500">
+                        <li>
+                            <span className="text-green-500">✓</span>{" "}
+                            Free cancellation up to 7 days
+                        </li>
+                        <li>
+                            <span className="text-green-500">✓</span>{" "}
+                            Travel insurance included
+                        </li>
+                        <li>
+                            <span className="text-green-500">✓</span>{" "}
+                            24/7 customer support
+                        </li>
+                    </ul>
+                </aside>
+            </div>
+        </main>
+    );
+};
+
+export default DestinationDetailPage;
