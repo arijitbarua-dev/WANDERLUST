@@ -76,11 +76,23 @@ export default function Navbar() {
 
           {
             user ? <Popover>
-              <PopoverTrigger render={<Avatar>
-                <AvatarImage referrerPolicy="no-referrer" src={user?.image as string} />
-                <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
-              </Avatar>}>
-              </PopoverTrigger>
+              <PopoverTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    className="h-10 w-10 rounded-full p-0"
+                    aria-label="Open account menu"
+                  >
+                    <Avatar>
+                      <AvatarImage
+                        referrerPolicy="no-referrer"
+                        src={user?.image as string}
+                      />
+                      <AvatarFallback>{user?.name?.charAt(0) ?? "U"}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                }
+              />
               <PopoverContent>
                 <PopoverHeader>
                   <PopoverTitle>{user?.name}</PopoverTitle>

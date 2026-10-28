@@ -26,6 +26,7 @@ export async function connectToMongoDB() {
 const mongoClient = await connectToMongoDB();
 const db = mongoClient.db("Wanderlust");
 const destinationCollection = db.collection("destination");
+const bookingCollection = db.collection("bookings");
 
 // // Call this only when your application terminates
 // export async function disconnectFromMongoDB() {
@@ -65,6 +66,61 @@ app.delete('/destinations/:id', async (req, res) => {
   const result = await destinationCollection.deleteOne({_id: new ObjectId(id)});
   res.json(result);
 });
+
+// Create a booking (Booking Details Page → bookings collection)
+app.post('/bookings', async (req, res) => {
+  const {
+    userName,
+    userImage,
+    userId,
+    destinationId,
+    destinationName,
+    destinationImage,
+    price,
+    departureDate,
+    status,
+  } = req.body;
+
+  if (!userId || !destinationId) {
+    return res.status(400).json({ error: "userId and destinationId are required." });
+  }
+
+  const booking = {
+    userName,
+    userImage,
+    userId,
+    destinationId,
+    destinationName,
+    destinationImage,
+    price,
+    departureDate,
+    status: status || "Confirmed",
+    createdAt: new Date(),
+  };
+
+  const result = await bookingCollection.insertOne(booking);
+  res.status(201).send({ ...booking, _id: result.insertedId });
+})
+
+// Get all bookings of the current user (My Bookings page)
+app.get('/bookings/:userId', async (req, res) => {
+  const { userId } = req.params;
+  const result = await bookingCollection.find({ userId }).toArray();
+  res.send(result);
+})
+
+// Cancel (remove) a booking
+app.delete('/bookings/:id', async (req, res) => {
+  const { id } = req.params;
+  const _id = ObjectId.isValid(id) ? new ObjectId(id) : id;
+  const result = await bookingCollection.deleteOne({ _id });
+
+  if (result.deletedCount === 0) {
+    return res.status(404).json({ error: "Booking not found." });
+  }
+
+  res.json(result);
+})
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

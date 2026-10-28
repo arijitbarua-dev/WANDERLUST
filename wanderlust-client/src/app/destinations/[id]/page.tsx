@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import EditDestinationDialog from "@/components/EditDestinationDialog";
 import DeleteDestinationDialog from "@/components/DeleteDestinationDialog";
+import BookingCard from "@/components/BookingCard";
 
 type DestinationDetailPageProps = {
     params: Promise<{
@@ -150,19 +151,7 @@ const DestinationDetailPage = async ({ params }: DestinationDetailPageProps) => 
                         Travel date
                     </label>
 
-                    <input
-                        id="travel-date"
-                        type="date"
-                        defaultValue="2026-05-15"
-                        className="mb-4 w-full border border-gray-200 bg-gray-50 px-3 py-3 text-sm outline-none focus:border-cyan-500"
-                    />
-
-                    <Link
-                        href={`/bookings/new?destinationId=${id}`}
-                        className="mb-4 flex w-full items-center justify-center gap-2 bg-cyan-500 px-4 py-3 text-sm font-medium text-white transition hover:bg-cyan-600"
-                    >
-                        Book Now <span>→</span>
-                    </Link>
+                    <BookingCard destination={destination}/>
 
                     <ul className="space-y-2 text-xs text-gray-500">
                         <li>
