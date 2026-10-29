@@ -33,13 +33,14 @@ const DestinationDetailPage = async ({ params }: DestinationDetailPageProps) => 
 
     const jwtToken = await auth.api.getToken({
         headers: await headers(),
-    })
-    console.log(jwtToken?.token)
+    });
+    const token = `Beear ${jwtToken?.token}`;
+    console.log(token)
 
     const res = await fetch(`http://localhost:5000/destinations/${id}`, {
         method: "GET",
         headers: {
-            authorization: jwtToken?.token,
+            authorization: token,
             "Content-type": "application/json"
         }
     });

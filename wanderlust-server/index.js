@@ -2,6 +2,7 @@ import express from "express";
 import { MongoClient, ObjectId } from 'mongodb';
 import 'dotenv/config';
 import cors from "cors";
+import { jwtVerify, createRemoteJWKSet } from 'jose';
 
 // const express = require('express');
 const app = express()
@@ -33,19 +34,41 @@ const bookingCollection = db.collection("bookings");
 //   await client.close();
 // }
 
-const verifyApi = (req, res, next) => {
+const verifyToken = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-  console.log("Authorization:", authHeader);
+  console.log("Authorization Header:", authHeader);
 
-  if (authHeader !== "User logged in!") {
+  if (!authHeader) {
     return res.status(401).send({
-      msg: "Unauthorized!",
+      msg: "Unauthorized! Token is missing.",
     });
   }
 
-  console.log("Middleware passed");
-  next();
+  const token = authHeader.split(" ")[1];
+
+  console.log("Token:", token);
+
+  if (!token) {
+    return res.status(401).send({
+      msg: "Unauthorized! Invalid token format.",
+    });
+  }
+
+  const JWKS = createRemoteJWKSet(
+    new URL('http://localhost:3000/api/auth/jwks')
+  );
+
+  try {
+    const { payload } = await jwtVerify(token, JWKS);
+    console.log(payload);
+    // Token received successfully
+    next();
+  } catch (error) {
+    return res.status(500).send({msg: "Server Error!"})
+  }
+
+  
 };
 
 app.post('/add-destination', async (req, res) => {
@@ -60,7 +83,7 @@ app.get('/destinations', async (req, res) => {
   res.send(result);
 })
 
-app.get("/destinations/:id", verifyApi, async (req, res) => {
+app.get("/destinations/:id", verifyToken, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -81,18 +104,18 @@ app.get("/destinations/:id", verifyApi, async (req, res) => {
 });
 
 app.patch('/destinations/:id', async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   const updatedData = req.body;
   const result = await destinationCollection.updateOne(
-    {_id: new ObjectId(id)},
-    {$set: updatedData}
+    { _id: new ObjectId(id) },
+    { $set: updatedData }
   );
   res.json(result);
 })
 
 app.delete('/destinations/:id', async (req, res) => {
-  const {id} = req.params;
-  const result = await destinationCollection.deleteOne({_id: new ObjectId(id)});
+  const { id } = req.params;
+  const result = await destinationCollection.deleteOne({ _id: new ObjectId(id) });
   res.json(result);
 });
 
