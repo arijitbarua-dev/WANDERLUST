@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { authClient } from "@/lib/auth-client";
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const categories = [
   "Beach",
@@ -51,8 +53,7 @@ const AddDestinationPage = () => {
     e.preventDefault();
 
 
-    const { data, error } = await authClient.token();
-    const token = `Beear ${data?.token}`;
+    const token = await getTokenFromClient();
 
     const res = await fetch('http://localhost:5000/add-destination', {
       method: "POST",

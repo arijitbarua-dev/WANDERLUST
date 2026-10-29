@@ -103,7 +103,7 @@ app.get("/destinations/:id", verifyToken, async (req, res) => {
   }
 });
 
-app.patch('/destinations/:id', async (req, res) => {
+app.patch('/destinations/:id', verifyToken, async (req, res) => {
   const { id } = req.params;
   const updatedData = req.body;
   const result = await destinationCollection.updateOne(

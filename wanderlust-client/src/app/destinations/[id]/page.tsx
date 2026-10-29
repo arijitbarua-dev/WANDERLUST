@@ -5,6 +5,7 @@ import DeleteDestinationDialog from "@/components/DeleteDestinationDialog";
 import BookingCard from "@/components/BookingCard";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
 
 type DestinationDetailPageProps = {
     params: Promise<{
@@ -31,10 +32,7 @@ type Destination = {
 const DestinationDetailPage = async ({ params }: DestinationDetailPageProps) => {
     const { id } = await params;
 
-    const jwtToken = await auth.api.getToken({
-        headers: await headers(),
-    });
-    const token = `Beear ${jwtToken?.token}`;
+    const token = await getTokenFromServer();
     console.log(token)
 
     const res = await fetch(`http://localhost:5000/destinations/${id}`, {

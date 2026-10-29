@@ -11,6 +11,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Trash2, Save } from "lucide-react";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 type Destination = {
     _id: string;
@@ -85,6 +86,7 @@ const EditDestinationDialog = ({
         setError("");
 
         try {
+            const token = await getTokenFromClient();
             // Assumes your backend updates destinations with PUT.
             const res = await fetch(
                 `http://localhost:5000/destinations/${destination._id}`,
@@ -92,6 +94,7 @@ const EditDestinationDialog = ({
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",
+                        authorization: token,
                     },
                     body: JSON.stringify({
                         ...form,

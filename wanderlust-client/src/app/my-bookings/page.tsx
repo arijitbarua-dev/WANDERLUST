@@ -7,6 +7,7 @@ import { authClient } from "@/lib/auth-client";
 import MyBookingCard, { type Booking } from "@/components/MyBookingCard";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const BookingsSkeleton = () => (
     <div className="flex flex-col gap-5" aria-hidden="true">
@@ -48,7 +49,13 @@ const MyBookingsPage = () => {
             setError("");
 
             try {
-                const res = await fetch(`http://localhost:5000/bookings/${userId}`);
+                const token = await getTokenFromClient();
+                const res = await fetch(`http://localhost:5000/bookings/${userId}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        authorization: token,
+                    },
+                });
 
                 if (!res.ok) {
                     throw new Error("Failed to load your bookings.");
