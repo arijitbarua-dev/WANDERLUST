@@ -50,7 +50,7 @@ const MyBookingsPage = () => {
 
             try {
                 const token = await getTokenFromClient();
-                const res = await fetch(`http://localhost:5000/bookings/${userId}`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings/${userId}`, {
                     headers: {
                         "Content-Type": "application/json",
                         authorization: token,

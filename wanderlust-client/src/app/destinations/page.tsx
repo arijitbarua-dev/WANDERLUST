@@ -37,7 +37,7 @@ export default function AllDestinationsPage() {
   useEffect(() => {
     const fetchDestinations = async () => {
       try {
-        const res = await fetch("http://localhost:5000/destinations");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/destinations`);
 
         if (!res.ok) {
           throw new Error("Failed to load destinations.");

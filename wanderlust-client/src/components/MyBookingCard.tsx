@@ -94,7 +94,7 @@ const MyBookingCard = ({ booking, onCancel }: MyBookingCardProps) => {
             setError("");
 
             const res = await fetch(
-                `http://localhost:5000/bookings/${booking._id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/bookings/${booking._id}`,
                 { method: "DELETE" }
             );
 

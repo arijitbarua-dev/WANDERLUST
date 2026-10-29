@@ -89,7 +89,7 @@ const EditDestinationDialog = ({
             const token = await getTokenFromClient();
             // Assumes your backend updates destinations with PUT.
             const res = await fetch(
-                `http://localhost:5000/destinations/${destination._id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/destinations/${destination._id}`,
                 {
                     method: "PATCH",
                     headers: {

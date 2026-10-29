@@ -35,7 +35,7 @@ const DestinationDetailPage = async ({ params }: DestinationDetailPageProps) => 
     const token = await getTokenFromServer();
     console.log(token)
 
-    const res = await fetch(`http://localhost:5000/destinations/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/destinations/${id}`, {
         method: "GET",
         headers: {
             authorization: token,

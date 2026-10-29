@@ -5,7 +5,6 @@ import { useState } from "react";
 import { AlertTriangle, Trash2, X } from "lucide-react";
 import { redirect } from "next/navigation";
 import { getTokenFromClient } from "@/lib/getTokenFromClient";
-import { getTokenFromServer } from "@/lib/getTokenFromServer";
 
 type DeleteDestinationDialogProps = {
     destinationId: string;
@@ -27,7 +26,7 @@ const DeleteDestinationDialog = ({
 
             const token = await getTokenFromClient();
             const res = await fetch(
-                `http://localhost:5000/destinations/${destinationId}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/destinations/${destinationId}`,
                 {
                     method: "DELETE",
                     headers: {
