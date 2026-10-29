@@ -33,6 +33,21 @@ const bookingCollection = db.collection("bookings");
 //   await client.close();
 // }
 
+const verifyApi = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  console.log("Authorization:", authHeader);
+
+  if (authHeader !== "User logged in!") {
+    return res.status(401).send({
+      msg: "Unauthorized!",
+    });
+  }
+
+  console.log("Middleware passed");
+  next();
+};
+
 app.post('/add-destination', async (req, res) => {
   const data = req.body;
   const result = await destinationCollection.insertOne(data);
@@ -45,11 +60,25 @@ app.get('/destinations', async (req, res) => {
   res.send(result);
 })
 
-app.get('/destinations/:id', async (req, res) => {
-  const {id} = req.params;
-  const result = await destinationCollection.findOne({_id: new ObjectId(id)});
-  res.send(result);
-})
+app.get("/destinations/:id", verifyApi, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await destinationCollection.findOne({
+      _id: new ObjectId(id),
+    });
+
+    // console.log("Destination:", result);
+
+    if (!result) {
+      return res.status(404).send({ msg: "Destination not found" });
+    }
+
+    res.send(result);
+  } catch (error) {
+    res.status(500).send({ msg: error.message });
+  }
+});
 
 app.patch('/destinations/:id', async (req, res) => {
   const {id} = req.params;

@@ -29,7 +29,13 @@ type Destination = {
 const DestinationDetailPage = async ({ params }: DestinationDetailPageProps) => {
     const { id } = await params;
 
-    const res = await fetch(`http://localhost:5000/destinations/${id}`);
+    const res = await fetch(`http://localhost:5000/destinations/${id}`, {
+        method: "GET",
+        headers: {
+            authorization: "User logged in!",
+            "Content-type": "application/json"
+        }
+    });
     const destination: Destination = await res.json();
 
     return (
