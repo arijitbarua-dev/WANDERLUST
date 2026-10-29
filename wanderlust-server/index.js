@@ -113,7 +113,7 @@ app.patch('/destinations/:id', verifyToken, async (req, res) => {
   res.json(result);
 })
 
-app.delete('/destinations/:id', async (req, res) => {
+app.delete('/destinations/:id', verifyToken, async (req, res) => {
   const { id } = req.params;
   const result = await destinationCollection.deleteOne({ _id: new ObjectId(id) });
   res.json(result);
@@ -155,14 +155,14 @@ app.post('/bookings', async (req, res) => {
 })
 
 // Get all bookings of the current user (My Bookings page)
-app.get('/bookings/:userId', async (req, res) => {
+app.get('/bookings/:userId', verifyToken, async (req, res) => {
   const { userId } = req.params;
   const result = await bookingCollection.find({ userId }).toArray();
   res.send(result);
 })
 
 // Cancel (remove) a booking
-app.delete('/bookings/:id', async (req, res) => {
+app.delete('/bookings/:id', verifyToken, async (req, res) => {
   const { id } = req.params;
   const _id = ObjectId.isValid(id) ? new ObjectId(id) : id;
   const result = await bookingCollection.deleteOne({ _id });
