@@ -1,36 +1,143 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌍 WANDERLUST
 
-## Getting Started
+### Discover Stays. Explore Places. Create Memories.
 
-First, run the development server:
+**WANDERLUST** is a full-stack travel accommodation platform inspired by modern vacation-rental marketplaces. It enables travelers to discover places to stay, explore property locations, share reviews, and manage accommodation listings through a user-friendly web interface.
+
+Built with **Node.js, Express.js, MongoDB, and EJS**, the project demonstrates full-stack web development, database integration, authentication, and location-based browsing.
+
+---
+
+## ✨ Key Features
+
+- **🔐 User Authentication & Authorization** — Register, log in, and access protected features with session-based authentication.
+- **🏡 Accommodation Listing Management** — Create, browse, edit, and delete property listings with ownership-based permissions.
+- **⭐ Reviews & Ratings** — Share feedback about accommodations and manage reviews with authorization checks.
+- **🖼️ Image Uploads** — Upload and display property images using Cloudinary for image storage and delivery.
+- **🗺️ Location-Based Discovery** — Explore property locations using interactive maps and geolocation services.
+
+---
+
+## 🛠️ Technologies Used
+
+### Frontend
+
+- **EJS** — Dynamic server-rendered templates
+- **HTML5 & CSS3** — Page structure and styling
+- **JavaScript** — Client-side interactivity
+- **Bootstrap** — Responsive UI components and layouts
+
+### Backend
+
+- **Node.js** — JavaScript runtime
+- **Express.js** — Web application framework
+- **Mongoose** — MongoDB object modeling
+- **Passport.js** — User authentication
+
+### Database & Services
+
+- **MongoDB Atlas** — Cloud database hosting
+- **Cloudinary** — Image storage and management
+- **Leaflet & OpenStreetMap** — Interactive maps and location visualization
+- **Nominatim** — Geocoding and location lookup
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Install the following before running the project:
+
+- [Node.js](https://nodejs.org/)
+- npm
+- A MongoDB database (local or MongoDB Atlas)
+- A Cloudinary account for image uploads
+
+### Installation
+
+**1. Clone the repository**
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/arijitbarua-dev/WANDERLUST.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**2. Navigate to the project directory**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cd WANDERLUST
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**3. Install dependencies**
 
-## Learn More
+```bash
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+**4. Configure environment variables**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create a `.env` file in the project root and add the values required by the application:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+ATLASDB_URL=your_mongodb_connection_string
+SECRET=your_session_secret
+CLOUD_NAME=your_cloudinary_cloud_name
+CLOUD_API_KEY=your_cloudinary_api_key
+CLOUD_API_SECRET=your_cloudinary_api_secret
+```
 
-## Deploy on Vercel
+If your local configuration requires a map access token, add the corresponding variable as well. Never commit real credentials or API secrets to GitHub.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**5. Start the application**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm start
+```
+
+If no `start` script is defined in `package.json`, use the configured entry point, for example:
+
+```bash
+node app.js
+```
+
+Open [http://localhost:8080](http://localhost:8080) in your browser if port 8080 is configured by the application.
+
+---
+
+## 📂 Project Structure
+
+```text
+WANDERLUST/
+├── controllers/    # Application logic
+├── models/         # Database models
+├── routes/         # Application routes
+├── views/          # EJS templates
+├── public/         # Static assets
+├── utils/          # Helper utilities
+├── app.js          # Application entry point
+├── cloudConfig.js  # Cloudinary configuration
+├── middleware.js   # Custom middleware
+├── schema.js       # Validation schemas
+└── package.json    # Dependencies and scripts
+```
+
+---
+
+## 🎯 Project Goal
+
+WANDERLUST aims to simplify accommodation discovery by bringing property listings, user reviews, image galleries, and location information together in one convenient platform.
+
+---
+
+## 👨‍💻 Developer
+
+**Arijit Barua Turza**
+
+- GitHub: [@arijitbarua-dev](https://github.com/arijitbarua-dev)
+- Repository: [WANDERLUST](https://github.com/arijitbarua-dev/WANDERLUST)
+
+---
+
+<p align="center">
+  <strong>🌍 WANDERLUST — Your Next Adventure Starts Here.</strong>
+</p>
