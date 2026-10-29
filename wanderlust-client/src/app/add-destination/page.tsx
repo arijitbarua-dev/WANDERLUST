@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { authClient } from "@/lib/auth-client";
 
 const categories = [
   "Beach",
@@ -43,22 +44,27 @@ const AddDestinationPage = () => {
 
   const handleChange =
     (field: keyof FormState) =>
-    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-      setForm((prev) => ({ ...prev, [field]: e.target.value }));
+      (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+        setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+
+    const { data, error } = await authClient.token();
+    const token = `Beear ${data?.token}`;
+
     const res = await fetch('http://localhost:5000/add-destination', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: token,
+      },
+      body: JSON.stringify(form),
     });
 
-    const data = await res.json();
-    console.log(data)
+    const result = await res.json();
+    console.log(result)
 
     // Connect your travel package API here.
     console.log("New travel package:", form);

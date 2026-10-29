@@ -71,7 +71,7 @@ const verifyToken = async (req, res, next) => {
   
 };
 
-app.post('/add-destination', async (req, res) => {
+app.post('/add-destination', verifyToken, async (req, res) => {
   const data = req.body;
   const result = await destinationCollection.insertOne(data);
   console.log(result);
