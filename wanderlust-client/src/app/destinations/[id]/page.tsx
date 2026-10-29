@@ -3,6 +3,8 @@ import Link from "next/link";
 import EditDestinationDialog from "@/components/EditDestinationDialog";
 import DeleteDestinationDialog from "@/components/DeleteDestinationDialog";
 import BookingCard from "@/components/BookingCard";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 type DestinationDetailPageProps = {
     params: Promise<{
@@ -29,10 +31,15 @@ type Destination = {
 const DestinationDetailPage = async ({ params }: DestinationDetailPageProps) => {
     const { id } = await params;
 
+    const jwtToken = await auth.api.getToken({
+        headers: await headers(),
+    })
+    console.log(jwtToken?.token)
+
     const res = await fetch(`http://localhost:5000/destinations/${id}`, {
         method: "GET",
         headers: {
-            authorization: "User logged in!",
+            authorization: jwtToken?.token,
             "Content-type": "application/json"
         }
     });
